@@ -252,6 +252,346 @@
         
            <div class="card">
         <a href="https://photos.app.goo.gl/dhMU5nqYvuJRRzZMA" target="_blank">
+          <img src="https://wallpaperaccess.com/full/3148406.jpg" alt="Natrix 2">
+        </a>
+      </div>
+      
+      <div class="card">
+        <a href="https://photos.app.goo.gl/s2Zoy7jahDvRrHeT8" target="_blank">
+          <img src="https://www.originalfilmart.com/cdn/shop/products/the_matrix_1999_advance_original_film_art_d47e19ed-a6b9-47d3-985c-30197dd9ccc5_1200x.jpg" alt="Matrix">
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer id="footer">
+    &copy; 2025 Oracle Quantum. Powered by Oracle. - Todos los derechos reservados.
+  </footer>
+
+  <!-- SCRIPT EFECTOS -->
+  <script>
+    /* Utilidad throttle para cabecera/pie */
+    function throttle(fn, wait){
+      let last = 0, rafId = null, pendingArgs = null;
+      return function(...args){
+        const now = performance.now();
+        pendingArgs = args;
+        if (now - last >= wait) {
+          last = now;
+          fn.apply(this, pendingArgs);
+          pendingArgs = null;
+        } else if (!rafId) {
+          rafId = requestAnimationFrame(() => {
+            rafId = null; last = performance.now();
+            if (pendingArgs) { fn.apply(this, pendingArgs); pendingArgs = null; }
+          });
+        }
+      };
+    }
+
+    const header = document.getElementById('cabecera');
+    const footer = document.getElementById('footer');
+
+    function updateLight(el, clientX, clientY){
+      const rect = el.getBoundingClientRect();
+      const x = Math.max(0, Math.min(clientX - rect.left, rect.width));
+      const y = Math.max(0, Math.min(clientY - rect.top, rect.height));
+      el.style.setProperty('--mx', x + 'px');
+      el.style.setProperty('--my', y + 'px');
+      el.classList.toggle('edge-left', x < rect.width / 2);
+      el.classList.toggle('edge-right', x >= rect.width / 2);
+    }
+
+    function bindReactiveLight(el) {
+      function onMove(ev) {
+        el.classList.add('is-hot');
+        const clientX = ev.touches ? ev.touches[0].clientX : ev.clientX;
+        const clientY = ev.touches ? ev.touches[0].clientY : ev.clientY;
+        updateLight(el, clientX, clientY);
+      }
+      const throttledMove = throttle(onMove, 16);
+      el.addEventListener('pointerenter', throttledMove);
+      el.addEventListener('pointermove', throttledMove);
+      el.addEventListener('pointerleave', () => el.classList.remove('is-hot', 'edge-left', 'edge-right'));
+      el.addEventListener('touchstart', throttledMove, { passive: true });
+      el.addEventListener('touchmove', throttledMove, { passive: true });
+      el.addEventListener('touchend', () => el.classList.remove('is-hot', 'edge-left', 'edge-right'));
+    }
+
+    bindReactiveLight(header);
+    bindReactiveLight(footer);
+
+    // Animaciones de aparición
+    document.addEventListener("DOMContentLoaded", () => {
+      setTimeout(() => header.classList.add('show'), 200);
+      setTimeout(() => footer.classList.add('show'), 400);
+
+      const cards = document.querySelectorAll('.card');
+      cards.forEach((card, i) => {
+        setTimeout(() => card.classList.add('show'), 500 + i * 150);
+      });
+    });
+
+    // --- EFECTO 3D + PARALLAX (profundidad natural) ---
+    const ROTATE_MAX = 20;   // grados
+    const SHIFT_MAX  = 24;   // píxeles (desplazamiento de la imagen)
+    document.querySelectorAll('.card').forEach(wrapper => {
+      const card = wrapper.querySelector('a');
+      const img  = wrapper.querySelector('img');
+
+      const applyFromPoint = (clientX, clientY) => {
+        const r = card.getBoundingClientRect();
+        const nx = (clientX - r.left) / r.width  - 0.5; // [-0.5, 0.5]
+        const ny = (clientY - r.top)  / r.height - 0.5;
+
+        // Rotación: la tarjeta "mira" al puntero
+        const rx = -(ny * ROTATE_MAX);
+        const ry =  (nx * ROTATE_MAX);
+        card.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
+
+        // Parallax interior: movimiento opuesto para dar profundidad (ventana)
+        const px = -(nx * SHIFT_MAX);
+        const py = -(ny * SHIFT_MAX);
+        img.style.transform = `translate(${px}px, ${py}px) scale(1.06)`;
+      };
+
+      const reset = () => {
+        card.style.transform = 'rotateX(0deg) rotateY(0deg)';
+        img.style.transform  = 'translate(0,0) scale(1.06)';
+      };
+
+      // Ratón / puntero
+      card.addEventListener('pointermove', e => applyFromPoint(e.clientX, e.clientY));
+      card.addEventListener('pointerleave', reset);
+
+      // Tocar (por compatibilidad adicional, aunque pointer cubre touch moderno)
+      card.addEventListener('touchmove', e => {
+        const t = e.touches[0];
+        applyFromPoint(t.clientX, t.clientY);
+      }, { passive: true });
+      card.addEventListener('touchend', reset, { passive: true });
+    });
+  </script>
+</body>
+</html>
+    /* CABECERA TRANSLÚCIDA */
+    .glass-header {
+      --mx: 50%;
+      --my: 50%;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: clamp(80px, 50vh, 120px);
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 16px;
+      padding: 1px clamp(16px, 5vw, 48px);
+      z-index: 50;
+      background: color-mix(in oklab, rgba(var(--bg)/var(--glass-alpha)), transparent);
+      backdrop-filter: saturate(160%) blur(var(--blur));
+      -webkit-backdrop-filter: saturate(160%) blur(var(--blur));
+      border-bottom: 1px solid color-mix(in oklab, rgba(var(--ink)/.08), transparent);
+      box-shadow: 0 1px 0 rgba(255,255,255,.06) inset, 0 10px 30px rgba(0,0,0,.06);
+      overflow: clip;
+      isolation: isolate;
+
+      /* Aparición desde arriba */
+      transform: translateY(-50px);
+      opacity: 0;
+      transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.8s ease;
+    }
+    .glass-header.show { transform: translateY(0); opacity: 1; }
+
+    .glass-header::before {
+      content: "";
+      position: absolute;
+      inset: -40% -10%;
+      pointer-events: none;
+      background: radial-gradient(200px 200px at var(--mx) var(--my), rgba(var(--ring)/.55), transparent 60%);
+      filter: blur(18px) saturate(130%);
+      opacity: 0;
+      transition: opacity .25s ease;
+      mix-blend-mode: screen;
+    }
+    .glass-header.is-hot::before { opacity: 1; }
+
+    .glass-header::after {
+      content: "";
+      position: absolute;
+      left: 0; right: 0; bottom: 0; height: 3px;
+      pointer-events: none;
+      background: linear-gradient(to right, rgba(var(--glow)/.0) 0%, rgba(var(--glow)/.0) 100%);
+      box-shadow: 0 0 16px 2px rgba(var(--glow)/.0);
+      transition: background .18s ease, box-shadow .18s ease, opacity .25s ease;
+      opacity: .0;
+    }
+    .glass-header.edge-left::after {
+      background: linear-gradient(to right,
+        rgba(var(--glow)/.85) 0%, rgba(var(--glow)/.75) 8%, rgba(var(--glow)/.18) var(--edge-size), rgba(var(--glow)/0) calc(var(--edge-size) + 12%));
+      box-shadow: 0 0 22px 3px rgba(var(--glow)/.35);
+      opacity: 1;
+    }
+    .glass-header.edge-right::after {
+      background: linear-gradient(to left,
+        rgba(var(--glow)/.85) 0%, rgba(var(--glow)/.75) 8%, rgba(var(--glow)/.18) var(--edge-size), rgba(var(--glow)/0) calc(var(--edge-size) + 12%));
+      box-shadow: 0 0 22px 3px rgba(var(--glow)/.35);
+      opacity: 1;
+    }
+
+    .brand { font-weight: 700; opacity: .9; }
+    .title {
+      grid-column: 1 / -1;
+      text-align: center;
+      font-weight: 800;
+      font-size: clamp(28px, 6.4vw, 64px);
+      text-shadow: 0 1px 8px rgba(255,255,255,.06);
+    }
+    @media (min-width: 860px) { .title { grid-column: 2; } }
+
+    /* CONTENIDO */
+    main {
+      flex-grow: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 32px;
+    }
+
+    .cards-container {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+      width: 100%;
+      max-width: 1200px;
+    }
+    @media (min-width: 600px) { .cards-container { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 960px) { .cards-container { grid-template-columns: repeat(3, 1fr); } }
+
+    .card {
+      width: 100%;
+      aspect-ratio: 3 / 4;
+      perspective: 1000px;
+      transform: scale(0.8);
+      opacity: 0;
+      transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.6s ease;
+    }
+    .card.show { transform: scale(1); opacity: 1; }
+
+    .card a {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border-radius: 16px;
+      overflow: hidden;
+      transform-style: preserve-3d;
+      transition: transform 0.2s ease;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+      background: #000;
+      will-change: transform;
+    }
+
+    /* Imagen con ligera ampliación y transición para el parallax */
+    .card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transform: translate(0,0) scale(1.06);
+      transition: transform 0.08s linear;
+      will-change: transform;
+      pointer-events: none; /* evita que la imagen capture el puntero */
+    }
+
+    /* FOOTER GLASS */
+    footer {
+      --mx: 50%;
+      --my: 50%;
+      position: relative;
+      text-align: center;
+      padding: 24px 16px;
+      color: rgba(235,238,245,0.6);
+      font-size: 14px;
+      background: color-mix(in oklab, rgba(var(--bg)/var(--glass-alpha)), transparent);
+      backdrop-filter: saturate(160%) blur(var(--blur));
+      -webkit-backdrop-filter: saturate(160%) blur(var(--blur));
+      border-top: 1px solid color-mix(in oklab, rgba(var(--ink)/.08), transparent);
+      box-shadow: 0 -1px 0 rgba(255,255,255,.06) inset, 0 -10px 30px rgba(0,0,0,.06);
+      isolation: isolate;
+      overflow: clip;
+
+      /* Aparición desde abajo */
+      transform: translateY(50px);
+      opacity: 0;
+      transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.8s ease;
+    }
+    footer.show { transform: translateY(0); opacity: 1; }
+
+    footer::before {
+      content: "";
+      position: absolute;
+      inset: -40% -10%;
+      pointer-events: none;
+      background: radial-gradient(200px 200px at var(--mx) var(--my), rgba(var(--ring)/.55), transparent 60%);
+      filter: blur(18px) saturate(130%);
+      opacity: 0;
+      transition: opacity .25s ease;
+      mix-blend-mode: screen;
+    }
+    footer.is-hot::before { opacity: 1; }
+  </style>
+</head>
+<body>
+  <!-- CABECERA -->
+  <header class="glass-header" id="cabecera">
+    <div class="brand">Oracle System</div>
+    <div class="spacer"></div>
+    <nav class="nav"></nav>
+    <div class="title">CINE</div>
+  </header>
+
+  <!-- CONTENIDO CON CARTELES 3D -->
+  <main>
+    <div class="cards-container">
+
+                              <div class="card">
+        <a href="https://photos.app.goo.gl/Cf6RtqsHmLa9Mm4FA" target="_blank">
+          <img src="https://gist.githubusercontent.com/oracleibmaisd0-droid/1afbd23b4b34156c32d2700a2a3383d8/raw/42c93cdf6837536cffa19c832a6e4820e7d1c42e/VendettaC.svg">
+        </a>
+              </div>      
+               
+               <div class="card">
+        <a href="https://mega.nz/folder/7MIlgDaZ#OIDiInYFPwf4Qg981iM8wA" target="_blank">
+          <img src="https://m.media-amazon.com/images/M/MV5BZGFmMjYxZTEtMDgxMS00MTVjLThmMmQtYTFhOWI0NWVlODM4XkEyXkFqcGc@._V1_.jpg" alt="Black Mirror: Bandersnatch">
+        </a>
+              </div>      
+      
+               <div class="card">
+        <a href="https://photos.app.goo.gl/rNNYAVKFi7c9nQWV6" target="_blank">
+          <img src="https://i.ibb.co/4Z5q83Qy/In-Shot-20250908-232744519.jpg" alt="Black Mirror: Bandersnatch">
+        </a>
+              </div>      
+
+              <div class="card">
+        <a href="https://photos.app.goo.gl/F3XF4FyY8fGevtCSA" target="_blank">
+          <img src="https://i.postimg.cc/2ysVMgs7/IMG-20250907-132758.jpg" alt="Dejar el mundo atrás">
+        </a>
+              </div>      
+      
+              <div class="card">
+        <a href="https://photos.app.goo.gl/CKUjs5Dyh6LTJjJy9" target="_blank">
+          <img src="https://image.tmdb.org/t/p/original/nAM5BzFBORX6xXQWn162CLBRLuy.jpg" alt="Perfectos Desconocidos">
+        </a>
+              </div>      
+      
+              <div class="card">
+        <a href="https://mega.nz/file/PNxxDTTL#wGVmKzSAGsL8d4krC-zvJMHJXCDcEJK-t1fjum1OKKk" target="_blank">
+          <img src="https://i.ebayimg.com/images/g/cz0AAOSwHRpfjIiD/s-l1200.webp" alt="Matrix 3">
+        </a>
+      </div>
+        
+           <div class="card">
+        <a href="https://photos.app.goo.gl/dhMU5nqYvuJRRzZMA" target="_blank">
           <img src="https://www.mubis.es/media/movies/7250/293766/matrix-resurrections-original.jpg" alt="Natrix 2">
         </a>
       </div>
