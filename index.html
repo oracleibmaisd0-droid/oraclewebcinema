@@ -1,19 +1,5 @@
 <!DOCTYPE html>
 <html lang="es">
-
-  <!-- ========TIEMPO======== -->
-  <!-- ==========================
-  MENSAJE ACTUALIZACIÓN
-  =========================== -->
-  
-  <script>
-  const fechaLimite = new Date(2025, 1);
-  const hoy = new Date();
-
-  if (hoy < fechaLimite) {
-    alert("");
-  }
-</script>
   
 <head>
   <meta charset="UTF-8" />
@@ -393,6 +379,20 @@
       }, { passive: true });
       card.addEventListener('touchend', reset, { passive: true });
     });
+  </script>
+
+      <!-- ========TIEMPO======== -->
+  <!-- ==========================
+  MENSAJE ACTUALIZACIÓN
+  =========================== -->
+  
+  <script>
+  const fechaLimiteUpdate = new Date(2026, 1);
+  const update = new Date();
+
+  if (update < fechaLimiteUpdate) {
+    alert("Test");
+  }
   </script>
 </body>
 </html>
