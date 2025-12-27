@@ -6,7 +6,7 @@
   <title>Cine</title>
   <link rel="icon" href="https://img.icons8.com/fluency/10000/movie.png">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet" />
+  <link href="https://fonts.cdnfonts.com/css/product-sans" rel="stylesheet" />
   <style>
     :root {
       --bg: 15 18 25;
@@ -22,7 +22,7 @@
     html, body {
       height: 100%;
       margin: 0;
-      font: 500 16px/1.4 'Lato', sans-serif;
+      font: 500 16px/1.4 'Product Sans', sans-serif;
       color: rgb(var(--ink));
       overflow-x: hidden;
     }
@@ -37,6 +37,59 @@
       background-attachment: fixed;
       padding-top: clamp(72px, 10vh, 120px);
     }
+
+  /* ===============================
+   FONDO DIFUSO MULTICOLOR (CENTRADO)
+   =============================== */
+
+#luma-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -999;
+  pointer-events: none;
+  overflow: hidden;
+  background: #000;
+}
+
+.luma-blob {
+  position: absolute;
+  width: 70vmax;
+  height: 70vmax;
+  max-width: 800px;
+  max-height: 800px;
+  border-radius: 50%;
+  opacity: 0.75;
+  mix-blend-mode: screen;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  filter: blur(100px);
+
+  /* Animación combinada: movimiento + rotación */
+  animation: blobAnimation 40s ease-in-out infinite alternate,
+             colorChange 20s ease-in-out infinite alternate;
+}
+
+/* Diferentes duraciones para cada blob */
+.luma-blob.b1 { background: #7f0000; animation-duration: 38s, 18s; }
+.luma-blob.b2 { background: #007f00; animation-duration: 42s, 22s; }
+.luma-blob.b3 { background: #00007f; animation-duration: 36s, 20s; }
+
+/* Animación combinada: movimiento + giro */
+@keyframes blobAnimation {
+  0%   { transform: translate(-50%, -50%) translateX(-15%) translateY(-10%) scale(0.5) rotate(0deg); }
+  25%  { transform: translate(-50%, -50%) translateX(10%) translateY(15%) scale(0.8) rotate(90deg); }
+  50%  { transform: translate(-50%, -50%) translateX(5%) translateY(-10%) scale(0.3) rotate(180deg); }
+  75%  { transform: translate(-50%, -50%) translateX(-10%) translateY(10%) scale(0.4) rotate(270deg); }
+  100% { transform: translate(-50%, -50%) translateX(-15%) translateY(-5%) scale(0.6) rotate(360deg); }
+}
+
+/* Cambio suave de color */
+@keyframes colorChange {
+  0%   { filter: blur(100px) hue-rotate(0deg); }
+  50%  { filter: blur(100px) hue-rotate(180deg); }
+  100% { filter: blur(100px) hue-rotate(360deg); }
+}
 
     /* CABECERA TRANSLÚCIDA */
     .glass-header {
@@ -205,6 +258,14 @@
   </style>
 </head>
 <body>
+    
+  <!-- FONDO DIFUSO MULTICOLOR UNIVERSAL -->
+<div id="luma-bg">
+  <div class="luma-blob b1"></div>
+  <div class="luma-blob b2"></div>
+  <div class="luma-blob b3"></div>
+</div>
+    
   <!-- CABECERA -->
   <header class="glass-header" id="cabecera">
     <div class="brand">Oracle System</div>
