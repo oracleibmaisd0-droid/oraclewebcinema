@@ -65,7 +65,7 @@
   transform: translate(-50%, -50%);
   filter: blur(100px);
 
-  /* Animación combinada: movimiento + rotación */
+  /* Animaci贸n combinada: movimiento + rotaci贸n */
   animation: blobAnimation 40s ease-in-out infinite alternate,
              colorChange 20s ease-in-out infinite alternate;
 }
@@ -75,7 +75,7 @@
 .luma-blob.b2 { background: #007f00; animation-duration: 42s, 22s; }
 .luma-blob.b3 { background: #00007f; animation-duration: 36s, 20s; }
 
-/* Animación combinada: movimiento + giro */
+/* Animaci贸n combinada: movimiento + giro */
 @keyframes blobAnimation {
   0%   { transform: translate(-50%, -50%) translateX(-15%) translateY(-10%) scale(0.5) rotate(0deg); }
   25%  { transform: translate(-50%, -50%) translateX(10%) translateY(15%) scale(0.8) rotate(90deg); }
@@ -91,7 +91,7 @@
   100% { filter: blur(100px) hue-rotate(360deg); }
 }
 
-    /* CABECERA TRANSLÚCIDA */
+    /* CABECERA TRANSL脷CIDA */
     .glass-header {
       --mx: 50%;
       --my: 50%;
@@ -112,7 +112,7 @@
       overflow: clip;
       isolation: isolate;
 
-      /* Aparición desde arriba */
+      /* Aparici贸n desde arriba */
       transform: translateY(-50px);
       opacity: 0;
       transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.8s ease;
@@ -171,7 +171,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 100px;
+      padding: 160px 30px 30px;
     }
 
     .cards-container {
@@ -207,7 +207,7 @@
       will-change: transform;
     }
 
-    /* Imagen con ligera ampliación y transición para el parallax */
+    /* Imagen con ligera ampliaci贸n y transici贸n para el parallax */
     .card img {
       width: 100%;
       height: 100%;
@@ -236,7 +236,7 @@
       isolation: isolate;
       overflow: clip;
 
-      /* Aparición desde abajo */
+      /* Aparici贸n desde abajo */
       transform: translateY(50px);
       opacity: 0;
       transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.8s ease;
@@ -404,7 +404,7 @@
               </div>      
 
               <div class="card">
-        <a href="https://photos.app.goo.gl/F3XF4FyY8fGevtCSA" target="_blank" title="Dejar el mundo atrás">
+        <a href="https://photos.app.goo.gl/F3XF4FyY8fGevtCSA" target="_blank" title="Dejar el mundo atr谩s">
           <img loading="lazy" src="https://i.postimg.cc/2ysVMgs7/IMG-20250907-132758.jpg">
         </a>
               </div>      
@@ -493,7 +493,7 @@
     bindReactiveLight(header);
     bindReactiveLight(footer);
 
-    // Animaciones de aparición
+    // Animaciones de aparici贸n
     document.addEventListener("DOMContentLoaded", () => {
       setTimeout(() => header.classList.add('show'), 200);
       setTimeout(() => footer.classList.add('show'), 400);
@@ -506,7 +506,7 @@
 
     // --- EFECTO 3D + PARALLAX (profundidad natural) ---
     const ROTATE_MAX = 20;   // grados
-    const SHIFT_MAX  = 24;   // píxeles (desplazamiento de la imagen)
+    const SHIFT_MAX  = 24;   // p铆xeles (desplazamiento de la imagen)
     document.querySelectorAll('.card').forEach(wrapper => {
       const card = wrapper.querySelector('a');
       const img  = wrapper.querySelector('img');
@@ -516,7 +516,7 @@
         const nx = (clientX - r.left) / r.width  - 0.5; // [-0.5, 0.5]
         const ny = (clientY - r.top)  / r.height - 0.5;
 
-        // Rotación: la tarjeta "mira" al puntero
+        // Rotaci贸n: la tarjeta "mira" al puntero
         const rx = -(ny * ROTATE_MAX);
         const ry =  (nx * ROTATE_MAX);
         card.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
@@ -532,7 +532,7 @@
         img.style.transform  = 'translate(0,0) scale(1.06)';
       };
 
-      // Ratón / puntero
+      // Rat贸n / puntero
       card.addEventListener('pointermove', e => applyFromPoint(e.clientX, e.clientY));
       card.addEventListener('pointerleave', reset);
 
@@ -547,7 +547,7 @@
 
       <!-- ========TIEMPO======== -->
   <!-- ==========================
-  MENSAJE ACTUALIZACIÓN
+  MENSAJE ACTUALIZACI脫N
   =========================== -->
   
   <script>
@@ -555,7 +555,7 @@
   const update = new Date();
 
   if (update < fechaLimiteUpdate) {
-    alert("Película MATRIX 1 corregida:\n\nCorregido la interferencia de sonido del canal derecho.\n\nCalidad audiovisual mejorada.\n\n\n\nPelícula MATRIX 2 (RELOADED) corregida:\n\nCalidad audiovisual mejorada.");
+    alert("Pel铆cula MATRIX 1 corregida:\n\nCorregido la interferencia de sonido del canal derecho.\n\nCalidad audiovisual mejorada.\n\n\n\nPel铆cula MATRIX 2 (RELOADED) corregida:\n\nCalidad audiovisual mejorada.");
   }
   </script>
   <script>
@@ -570,7 +570,7 @@
 
 /*
 ==================================================
-    🔴🟢🔵 INDICADORES NOVEDADES
+    馃敶馃煝馃數 INDICADORES NOVEDADES
 ==================================================
 */
 
@@ -578,7 +578,7 @@ marcar("Elysium", "#ff0000", "15/09/2026");
 
 /*
 ==================================================
-    FUNCIÓN marcar()
+    FUNCI脫N marcar()
 ==================================================
 */
 
@@ -586,7 +586,7 @@ function marcar(palabra, color, fechaCaducidad) {
 
     /*
     ----------------------------------------------
-    Vencimiento fecha función
+    Vencimiento fecha funci贸n
     ----------------------------------------------
     */
 
@@ -596,14 +596,14 @@ function marcar(palabra, color, fechaCaducidad) {
 
         const dia = parseInt(partes[0], 10);
         const mes = parseInt(partes[1], 10) - 1;
-        const año = parseInt(partes[2], 10);
+        const a帽o = parseInt(partes[2], 10);
 
         /*
-        La fecha caduca una vez superado el límite.
+        La fecha caduca una vez superado el l铆mite.
         */
 
         const caducidad = new Date(
-            año,
+            a帽o,
             mes,
             dia + 1,
             0,
@@ -699,7 +699,7 @@ function marcar(palabra, color, fechaCaducidad) {
 
 
                 /*
-                Crear burbuja de notificación.
+                Crear burbuja de notificaci贸n.
                 */
 
                 const punto =
@@ -713,7 +713,7 @@ function marcar(palabra, color, fechaCaducidad) {
 
 
                 /*
-                Añadir en palabra
+                A帽adir en palabra
                 */
 
                 marcado.appendChild(punto);
@@ -767,7 +767,7 @@ document.querySelectorAll("[title]").forEach(elemento => {
         const contenedor = elemento.parentElement;
 
         /*
-        El contenedor será la referencia para posicionar el la burbuja.
+        El contenedor ser谩 la referencia para posicionar el la burbuja.
         */
 
         contenedor.style.position = "relative";
