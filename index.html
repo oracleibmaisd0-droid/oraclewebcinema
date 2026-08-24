@@ -171,7 +171,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 32px;
+      padding: 100px;
     }
 
     .cards-container {
@@ -255,6 +255,71 @@
       mix-blend-mode: screen;
     }
     footer.is-hot::before { opacity: 1; }
+    
+    
+    /* ESTILO NOVEDADES */
+
+.palabra-marcada {
+    position: relative !important;
+    display: inline-block !important;
+}
+
+.punto-novedad {
+    position: absolute !important;
+
+    width: 8px !important;
+    height: 8px !important;
+
+    min-width: 8px !important;
+    min-height: 8px !important;
+    max-width: 8px !important;
+    max-height: 8px !important;
+
+    aspect-ratio: 1 / 1 !important;
+
+    display: block !important;
+
+    padding: 0 !important;
+    margin: 0 !important;
+
+    border: 0 !important;
+    border-radius: 50% !important;
+
+    top: -6px !important;
+    right: -9px !important;
+
+    box-sizing: border-box !important;
+
+    box-shadow: none !important;
+
+    line-height: 0 !important;
+
+    pointer-events: none !important;
+}
+    
+    .punto-novedad {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+
+  animation: puntoNovedad 1.5s ease-in-out infinite;
+
+  box-shadow:
+    0 0 6px rgba(255,255,255,.8),
+    0 0 12px currentColor;
+}
+
+@keyframes puntoNovedad {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: scale(1.35);
+    opacity: .65;
+  }
+}
   </style>
 </head>
 <body>
@@ -500,4 +565,243 @@
 });
 </script>
 </body>
+
+  <script>
+
+/*
+==================================================
+    🔴🟢🔵 INDICADORES NOVEDADES
+==================================================
+*/
+
+marcar("Elysium", "#ff0000", "15/09/2026");
+
+/*
+==================================================
+    FUNCIÓN marcar()
+==================================================
+*/
+
+function marcar(palabra, color, fechaCaducidad) {
+
+    /*
+    ----------------------------------------------
+    Vencimiento fecha función
+    ----------------------------------------------
+    */
+
+    if (fechaCaducidad) {
+
+        const partes = fechaCaducidad.split("/");
+
+        const dia = parseInt(partes[0], 10);
+        const mes = parseInt(partes[1], 10) - 1;
+        const año = parseInt(partes[2], 10);
+
+        /*
+        La fecha caduca una vez superado el límite.
+        */
+
+        const caducidad = new Date(
+            año,
+            mes,
+            dia + 1,
+            0,
+            0,
+            0
+        );
+
+        const ahora = new Date();
+
+        /*
+        Nule pasdate
+        */
+
+        if (ahora >= caducidad) {
+            return;
+        }
+    }
+
+
+    /*
+    ----------------------------------------------
+    Buscador texto
+    ----------------------------------------------
+    */
+
+    const walker = document.createTreeWalker(
+        document.body,
+        NodeFilter.SHOW_TEXT
+    );
+
+    const nodos = [];
+
+    let nodo;
+
+    while (nodo = walker.nextNode()) {
+        nodos.push(nodo);
+    }
+
+
+    /*
+    ----------------------------------------------
+    Procesador texto buscado.
+    ----------------------------------------------
+    */
+
+    nodos.forEach(textNode => {
+
+        const texto = textNode.nodeValue;
+
+        if (
+            !texto
+                .toLowerCase()
+                .includes(palabra.toLowerCase())
+        ) {
+            return;
+        }
+
+
+        const fragmento =
+            document.createDocumentFragment();
+
+
+        /*
+        Separar las apariciones de la palabra.
+        */
+
+        const partes = texto.split(
+            new RegExp(`(${palabra})`, "gi")
+        );
+
+
+        partes.forEach(parte => {
+
+            /*
+            --------------------------------------
+            Palabra encontrada
+            --------------------------------------
+            */
+
+            if (
+                parte.toLowerCase() ===
+                palabra.toLowerCase()
+            ) {
+
+                const marcado =
+                    document.createElement("span");
+
+                marcado.className =
+                    "palabra-marcada";
+
+                marcado.textContent =
+                    parte;
+
+
+                /*
+                Crear burbuja de notificación.
+                */
+
+                const punto =
+                    document.createElement("span");
+
+                punto.className =
+                    "punto-novedad";
+
+                punto.style.backgroundColor =
+                    color;
+
+
+                /*
+                Añadir en palabra
+                */
+
+                marcado.appendChild(punto);
+
+                fragmento.appendChild(marcado);
+
+            }
+
+
+            /*
+            --------------------------------------
+            Texto no encontrado.
+            --------------------------------------
+            */
+
+            else {
+
+                fragmento.appendChild(
+                    document.createTextNode(parte)
+                );
+
+            }
+
+        });
+
+
+        /*
+        ----------------------------------------------
+        Sustituir texto original
+        ----------------------------------------------
+        */
+
+        textNode.parentNode.replaceChild(
+            fragmento,
+            textNode
+        );
+
+
+    });
+
+
+document.querySelectorAll("[title]").forEach(elemento => {
+
+    const titulo = elemento.getAttribute("title");
+
+    if (
+        titulo &&
+        titulo.toLowerCase().includes(palabra.toLowerCase())
+    ) {
+
+        const contenedor = elemento.parentElement;
+
+        /*
+        El contenedor será la referencia para posicionar el la burbuja.
+        */
+
+        contenedor.style.position = "relative";
+        contenedor.style.display = "inline-block";
+
+
+        /*
+        Crear burbuja.
+        */
+
+        const punto = document.createElement("span");
+
+        punto.className = "punto-novedad";
+
+        punto.style.backgroundColor = color;
+
+
+        /*
+        Esquina superior derecha
+        */
+
+        punto.style.position = "absolute";
+        punto.style.top = "-4px";
+        punto.style.right = "-4px";
+
+
+        contenedor.appendChild(punto);
+    }
+
+});
+
+
+}
+
+</script>
+
 </html>
