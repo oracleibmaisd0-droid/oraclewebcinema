@@ -1,21 +1,12 @@
+<!DOCTYPE html>
 <html lang="es">
-
-<script>
-  const fechaLimiteUpdate = new Date(2025, 11);
-  const update = new Date();
-
-  if (update < fechaLimiteUpdate) {
-    alert("PÁGINA WEB OPTIMIZADA\n\nBugs corregidos.");
-  }
-</script>
-
+  
 <head>
   <meta charset="UTF-8" />
-  <title>Galería 3D</title>
-  <link rel="icon" href="https://img.icons8.com/fluency/10000/3d-select.png">
+  <title>Cine</title>
+  <link rel="icon" href="https://img.icons8.com/fluency/10000/movie.png">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link href="https://fonts.cdnfonts.com/css/product-sans" rel="stylesheet" />
-
   <style>
     :root {
       --bg: 15 18 25;
@@ -23,21 +14,18 @@
       --glass-alpha: .14;
       --blur: 16px;
       --ring: 255 255 255;
+      --glow: 99 102 241;
+      --edge-size: 30%;
     }
 
-    * {
-      box-sizing: border-box;
-    }
-
-    html,
-    body {
+    * { box-sizing: border-box; }
+    html, body {
       height: 100%;
       margin: 0;
       font: 500 16px/1.4 'Product Sans', sans-serif;
       color: rgb(var(--ink));
       overflow-x: hidden;
     }
-
     body {
       display: flex;
       flex-direction: column;
@@ -49,7 +37,7 @@
       background-attachment: fixed;
       padding-top: clamp(72px, 10vh, 120px);
     }
-    
+
   /* ===============================
    FONDO DIFUSO MULTICOLOR (CENTRADO)
    =============================== */
@@ -77,7 +65,7 @@
   transform: translate(-50%, -50%);
   filter: blur(100px);
 
-  /* Animación combinada: movimiento + rotación */
+  /* Animaci贸n combinada: movimiento + rotaci贸n */
   animation: blobAnimation 40s ease-in-out infinite alternate,
              colorChange 20s ease-in-out infinite alternate;
 }
@@ -87,7 +75,7 @@
 .luma-blob.b2 { background: #007f00; animation-duration: 42s, 22s; }
 .luma-blob.b3 { background: #00007f; animation-duration: 36s, 20s; }
 
-/* Animación combinada: movimiento + giro */
+/* Animaci贸n combinada: movimiento + giro */
 @keyframes blobAnimation {
   0%   { transform: translate(-50%, -50%) translateX(-15%) translateY(-10%) scale(0.5) rotate(0deg); }
   25%  { transform: translate(-50%, -50%) translateX(10%) translateY(15%) scale(0.8) rotate(90deg); }
@@ -103,47 +91,18 @@
   100% { filter: blur(100px) hue-rotate(360deg); }
 }
 
-    /* TRANSICIONES CABECERA Y FOOTER */
-    header {
-      opacity: 0;
-      transform: translateY(-40px);
-      animation: slideDown 0.6s forwards ease-out;
-    }
-
-    footer {
-      opacity: 0;
-      transform: translateY(40px);
-      animation: slideUp 0.6s forwards ease-out;
-    }
-
-    @keyframes slideDown {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @keyframes slideUp {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    /* CABECERA TRANSLÚCIDA */
+    /* CABECERA TRANSL脷CIDA */
     .glass-header {
       --mx: 50%;
       --my: 50%;
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: clamp(72px, 15vh, 120px); /* Altura responsive */
+      top: 0; left: 0; right: 0;
+      height: clamp(80px, 50vh, 150px);
       display: grid;
       grid-template-columns: 1fr auto 1fr;
       align-items: center;
       gap: 16px;
-      padding: 8px clamp(16px, 5vw, 48px);
+      padding: 1px clamp(16px, 5vw, 48px);
       z-index: 50;
       background: color-mix(in oklab, rgba(var(--bg)/var(--glass-alpha)), transparent);
       backdrop-filter: saturate(160%) blur(var(--blur));
@@ -152,10 +111,15 @@
       box-shadow: 0 1px 0 rgba(255,255,255,.06) inset, 0 10px 30px rgba(0,0,0,.06);
       overflow: clip;
       isolation: isolate;
-    }
 
-    .glass-header::before,
-    footer::before {
+      /* Aparici贸n desde arriba */
+      transform: translateY(-50px);
+      opacity: 0;
+      transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.8s ease;
+    }
+    .glass-header.show { transform: translateY(0); opacity: 1; }
+
+    .glass-header::before {
       content: "";
       position: absolute;
       inset: -40% -10%;
@@ -166,111 +130,99 @@
       transition: opacity .25s ease;
       mix-blend-mode: screen;
     }
+    .glass-header.is-hot::before { opacity: 1; }
 
-    .glass-header.is-hot::before,
-    footer.is-hot::before {
+    .glass-header::after {
+      content: "";
+      position: absolute;
+      left: 0; right: 0; bottom: 0; height: 3px;
+      pointer-events: none;
+      background: linear-gradient(to right, rgba(var(--glow)/.0) 0%, rgba(var(--glow)/.0) 100%);
+      box-shadow: 0 0 16px 2px rgba(var(--glow)/.0);
+      transition: background .18s ease, box-shadow .18s ease, opacity .25s ease;
+      opacity: .0;
+    }
+    .glass-header.edge-left::after {
+      background: linear-gradient(to right,
+        rgba(var(--glow)/.85) 0%, rgba(var(--glow)/.75) 8%, rgba(var(--glow)/.18) var(--edge-size), rgba(var(--glow)/0) calc(var(--edge-size) + 12%));
+      box-shadow: 0 0 22px 3px rgba(var(--glow)/.35);
+      opacity: 1;
+    }
+    .glass-header.edge-right::after {
+      background: linear-gradient(to left,
+        rgba(var(--glow)/.85) 0%, rgba(var(--glow)/.75) 8%, rgba(var(--glow)/.18) var(--edge-size), rgba(var(--glow)/0) calc(var(--edge-size) + 12%));
+      box-shadow: 0 0 22px 3px rgba(var(--glow)/.35);
       opacity: 1;
     }
 
-    .brand {
-      font-weight: 700;
-      opacity: .9;
-    }
-
+    .brand { font-weight: 700; opacity: .9; }
     .title {
       grid-column: 1 / -1;
-      margin-top: -20px;
       text-align: center;
-      margin-top: -20px;
       font-weight: 800;
-      line-height: 0;
-      letter-spacing: -0.02em;
       font-size: clamp(28px, 6.4vw, 64px);
       text-shadow: 0 1px 8px rgba(255,255,255,.06);
-      align-self: start; /* título más arriba */
     }
+    @media (min-width: 860px) { .title { grid-column: 2; } }
 
-    @media (min-width: 860px) {
-      .title {
-        grid-column: 2;
-      }
-    }
-
-    @media (max-width: 768px) {
-      .title {
-        font-size: clamp(24px, 8vw, 48px);
-      }
-      .header-buttons {
-        gap: 8px;
-      }
-      .header-buttons button {
-        padding: 6px 12px;
-        font-size: 14px;
-      }
-    }
-
-    /* BOTONES CABECERA */
-    .header-buttons button {
-      padding: 0.5em 1em;
-      border-radius: 8px;
-      border: none;
-      cursor: pointer;
-      font-weight: 600;
-      font-size: 12px;
-      font-family: 'Product Sans', sans-serif;
-      transition: transform 0.2s ease;
-      white-space: nowrap;
-    }
-
-    .header-buttons button:hover {
-      transform: scale(1.05);
-    }
-
-    /* GALERÍA DE IFRAMES */
+    /* CONTENIDO */
     main {
       flex-grow: 1;
       display: flex;
       justify-content: center;
-      align-items: flex-start;
-      padding: 40px 20px;
+      align-items: center;
+      padding: 160px 30px 30px;
     }
 
-    .iframe-grid {
+    .cards-container {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: 1fr;
       gap: 24px;
       width: 100%;
       max-width: 1200px;
-      margin: 10 auto;
     }
+    @media (min-width: 600px) { .cards-container { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 960px) { .cards-container { grid-template-columns: repeat(3, 1fr); } }
 
-    @media (max-width: 768px) {
-      .iframe-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .iframe-grid iframe {
+    .card {
       width: 100%;
-      aspect-ratio: 1 / 1;
-      border: none;
-      border-radius: 16px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
-      background: #000;
-      opacity: 0;
+      aspect-ratio: 3 / 4;
+      perspective: 1000px;
       transform: scale(0.8);
-      animation: popUp 0.5s forwards ease-out;
+      opacity: 0;
+      transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.6s ease;
+    }
+    .card.show { transform: scale(1); opacity: 1; }
+
+    .card a {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border-radius: 16px;
+      overflow: hidden;
+      transform-style: preserve-3d;
+      transition: transform 0.2s ease;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+      background: #000;
+      will-change: transform;
     }
 
-    @keyframes popUp {
-      to {
-        opacity: 1;
-        transform: scale(1);
-      }
+    /* Imagen con ligera ampliaci贸n y transici贸n para el parallax */
+    .card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transform: translate(0,0) scale(1.06);
+      transition: transform 0.08s linear;
+      will-change: transform;
+      pointer-events: none; /* evita que la imagen capture el puntero */
     }
 
     /* FOOTER GLASS */
     footer {
+      --mx: 50%;
+      --my: 50%;
       position: relative;
       text-align: center;
       padding: 24px 16px;
@@ -283,115 +235,35 @@
       box-shadow: 0 -1px 0 rgba(255,255,255,.06) inset, 0 -10px 30px rgba(0,0,0,.06);
       isolation: isolate;
       overflow: clip;
+
+      /* Aparici贸n desde abajo */
+      transform: translateY(50px);
+      opacity: 0;
+      transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.8s ease;
     }
+    footer.show { transform: translateY(0); opacity: 1; }
+
+    footer::before {
+      content: "";
+      position: absolute;
+      inset: -40% -10%;
+      pointer-events: none;
+      background: radial-gradient(200px 200px at var(--mx) var(--my), rgba(var(--ring)/.55), transparent 60%);
+      filter: blur(18px) saturate(130%);
+      opacity: 0;
+      transition: opacity .25s ease;
+      mix-blend-mode: screen;
+    }
+    footer.is-hot::before { opacity: 1; }
     
-.sidebar {
-    position: fixed;
-    top: 0;
-    right: -280px;      /* o left si sale por la izquierda */
-    width: 280px;
-    height: 100vh;
-    z-index: 8888;
-
-    background: color-mix(in oklab, rgba(var(--bg)/var(--glass-alpha)), transparent);
-    backdrop-filter: saturate(160%) blur(var(--blur));
-    -webkit-backdrop-filter: saturate(160%) blur(var(--blur));
-
-    border-left: 1px solid color-mix(in oklab, rgba(var(--ink)/.08), transparent);
-    box-shadow:
-        0 0 30px rgba(0,0,0,.25),
-        inset 1px 0 rgba(255,255,255,.06);
-
-    transition: right .3s ease;
-}
-
-main {
-    transition: transform .3s ease;
-}
-
-body.menu-open .sidebar {
-    right: 0;
-}
-
-
-
-.menu-button {
-    grid-column: 3;
-    justify-self: end;
-    align-self: center;
-    position: absolute;
-    top: 5%;
-    right: 20px;
-    transform: translateY(-50%);
-    z-index: 9999;
-    width: 42px;
-    height: 42px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border: 1px solid rgba(255,255,255,.12);
-    border-radius: 12px;
-
-    background: rgba(255,255,255,.08);
-    backdrop-filter: blur(16px) saturate(160%);
-    -webkit-backdrop-filter: blur(16px) saturate(160%);
-
-    color: white;
-    font-size: 22px;
-    cursor: pointer;
-
-    box-shadow:
-        0 1px 0 rgba(255,255,255,.08) inset,
-        0 8px 20px rgba(0,0,0,.25);
-
-    transition: .2s ease;
-}
-
-.sidebar {
-    --mx: 50%;
-    --my: 50%;
-    overflow: hidden;
-    isolation: isolate;
-}
-
-.sidebar::before {
-    content: "";
-    position: absolute;
-    inset: -40%;
-    pointer-events: none;
-    background: radial-gradient(
-        200px 200px at var(--mx) var(--my),
-        rgba(255,255,255,.55),
-        transparent 60%
-    );
-    filter: blur(18px) saturate(130%);
-    opacity: 0;
-    transition: opacity .25s ease;
-    mix-blend-mode: screen;
-}
-
-.sidebar.is-hot::before {
-    opacity: 1;
-}
-
-#menuIcon{
-    width:28px;
-    height:28px;
-    pointer-events:none;
-}
-
-/* ==========================================
-   INDICADORES DE NOVEDAD
-   ========================================== */
+    
+    /* ESTILO NOVEDADES */
 
 .palabra-marcada {
     position: relative !important;
     display: inline-block !important;
 }
 
-/* Punto universal */
 .punto-novedad {
     position: absolute !important;
 
@@ -403,61 +275,29 @@ body.menu-open .sidebar {
     max-width: 8px !important;
     max-height: 8px !important;
 
+    aspect-ratio: 1 / 1 !important;
+
+    display: block !important;
+
     padding: 0 !important;
     margin: 0 !important;
 
     border: 0 !important;
     border-radius: 50% !important;
 
+    top: -6px !important;
+    right: -9px !important;
+
     box-sizing: border-box !important;
 
-    display: block !important;
+    box-shadow: none !important;
 
     line-height: 0 !important;
 
     pointer-events: none !important;
-
-    z-index: 999999 !important;
 }
-
-
-/* ==========================================
-   PUNTO PARA IFRAMES
-   ========================================== */
-
-.iframe-novedad {
-    position: relative !important;
-}
-
-
-/* ==========================================
-   PUNTO PARA BOTÓN DEL MENÚ
-   ========================================== */
-
-.menu-button {
-    /* Conservamos todo lo que ya tiene */
-}
-
-.menu-button .punto-novedad {
-    top: -4px !important;
-    right: -4px !important;
-}
-
-
-/* ==========================================
-   PUNTOS PARA BOTONES DEL SIDEBAR
-   ========================================== */
-
-.sidebar .header-buttons button {
-    position: relative !important;
-}
-
-.sidebar .header-buttons button .punto-novedad {
-    top: -4px !important;
-    right: -4px !important;
-}
-
-.punto-novedad {
+    
+    .punto-novedad {
   width: 12px;
   height: 12px;
   border-radius: 50%;
@@ -480,12 +320,9 @@ body.menu-open .sidebar {
   }
 }
   </style>
-  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js"></script>
 </head>
-
 <body>
-
+    
   <!-- FONDO DIFUSO MULTICOLOR UNIVERSAL -->
 <div id="luma-bg">
   <div class="luma-blob b1"></div>
@@ -496,94 +333,115 @@ body.menu-open .sidebar {
   <!-- CABECERA -->
   <header class="glass-header" id="cabecera">
     <div class="brand">Oracle System</div>
-
-    <!-- BOTONES DE REDIRECCIÓN -->
-
-
     <div class="spacer"></div>
     <nav class="nav"></nav>
-    <div class="title">GALERÍA 3D</div>
+    <div class="title">CINE</div>
   </header>
 
-     <button class="menu-button" onclick="toggleMenu()" title="Menú lateral"><div id="menuIcon"></div></button>
-
-<nav id="sidebar" class="sidebar">
-    
-    
-    <div class="header-buttons" style="gap: 12px; grid-column: 3; justify-self: end; padding-top: 25px;">
-      <button style="background-color:#0000007a; color:#f00;" onclick="window.location.href='https://oraclewebalbum.netlify.app'"><img src="https://img.icons8.com/fluency/60/front-view.png" title="Álbum de imágenes"></button>
-      <button style="background-color:#0000007a; color:#fff;" onclick="window.location.href='https://oraclewebgallery-360.netlify.app'"><img src="https://img.icons8.com/fluency/60/360-view.png" title="Galería 360°"></button>
-      <button style="background-color:#0000007a; color:#fff;" onclick="window.location.href='https://maps.apple.com/look-around?address=Carrer+de+Mallorca%2C+337%2C+08037+Barcelona%2C+Espa%C3%B1a&coordinate=41.399822%2C2.1702689&name=Carrer+de+Mallorca%2C+337&_mvs=CiQJY0FZxiizREAR8%2FfWlLVcAUAZAAD4EwOsVEAh6Pj8JsZOc0A%3D'"><img src="https://img.icons8.com/color/60/apple-map.png" title="Look Around"></button>
-    </div>
-    
-    </nav>
-
-
-  <!-- GALERÍA DE IFRAMES -->
-  <script>
-        alert("Para navegar por las escenas 3D pulse sobre la ESTRELLA.\n\n\n\nPara mantener el RENDIMIENTO ÓPTIMO de la web pulse sobre el TRIÁNGULO (Play) ya que un mayor número de renderizado puede colapsar la página.");
-    </script>
-  
+  <!-- CONTENIDO CON CARTELES 3D -->
   <main>
-    <div class="iframe-grid">
-<iframe loading="lazy" src="https://lumalabs.ai/embed/0047cf80-ee7a-4381-8069-eec58b5f70e1?mode=video&background=%23000000&color=%23FFFFFF&showTitle=false&loadBg=true&logoPosition=top-left&infoPosition=bottom-right&cinematicVideo=false&showMenu=true">Hoguera LoveHover Alicante 26</iframe>
-<iframe loading="lazy" src="https://lumalabs.ai/embed/cd3e4c14-903b-4f51-bf31-18cf02206e38?mode=video&background=%23000000&color=%23FFFFFF&showTitle=false&loadBg=true&logoPosition=top-left&infoPosition=bottom-right&cinematicVideo=false&showMenu=true">Hoguera SexPol Alicante 26</iframe>
-<iframe loading="lazy" src="https://lumalabs.ai/embed/f42ccce1-5365-496e-8a87-cd0fbbc11b6e?mode=video&background=%23000000&color=%23FFFFFF&showTitle=false&loadBg=true&logoPosition=top-left&infoPosition=bottom-right&cinematicVideo=false&showMenu=true">Hoguera PhyLove Alicante 26</iframe>
-<iframe loading="lazy" src="https://lumalabs.ai/embed/40a4f56a-1a43-400d-868d-414244069154?mode=video&background=%23000000&color=%23FFFFFF&showTitle=false&loadBg=true&logoPosition=top-left&infoPosition=bottom-right&cinematicVideo=false&showMenu=true">Hoguera LoveCut Alicante 26</iframe>
-<iframe loading="lazy" src="https://lumalabs.ai/embed/c7316304-ae8d-45ee-884d-c943fb63b63d?mode=video&background=%23000000&color=%23FFFFFF&showTitle=false&loadBg=true&logoPosition=top-left&infoPosition=bottom-right&cinematicVideo=false&showMenu=true">Hoguera Alicante 26 LoveDigital</iframe>
-<iframe loading="lazy" src="https://lumalabs.ai/embed/9f6e1131-627b-414d-98c3-18e803482283?mode=video&background=%23000000&color=%23FFFFFF&showTitle=false&loadBg=true&logoPosition=top-left&infoPosition=bottom-right&cinematicVideo=false&showMenu=true"></iframe>
-<iframe loading="lazy" src="https://lumalabs.ai/embed/23aeeecd-90c7-446b-8e9b-717ac2af80ed?mode=video&background=%23000000&color=%23FFFFFF&showTitle=false&loadBg=true&logoPosition=top-left&infoPosition=bottom-right&cinematicVideo=false&showMenu=true"></iframe>
-<iframe loading="lazy" src="https://lumalabs.ai/embed/48345a3e-97d0-40da-aaaf-a506a03667a2?mode=video&background=%23000000&color=%23FFFFFF&showTitle=false&loadBg=true&logoPosition=top-left&infoPosition=bottom-right&cinematicVideo=false&showMenu=true"></iframe>
-<iframe loading="lazy" src="https://lumalabs.ai/embed/d1c0c010-8e25-4b12-8348-f67c2a42642a?mode=video&background=%23000000&color=%23FFFFFF&showTitle=false&loadBg=true&logoPosition=top-left&infoPosition=bottom-right&cinematicVideo=false&showMenu=true"></iframe>
-<iframe loading="lazy" src="https://lumalabs.ai/embed/86752950-d1b0-4153-9223-37b165295a94?mode=video&background=%23000000&color=%23FFFFFF&showTitle=false&loadBg=true&logoPosition=top-left&infoPosition=bottom-right&cinematicVideo=false&showMenu=true"></iframe>
-<iframe loading="lazy" src="https://lumalabs.ai/embed/c72ee2db-f364-402d-a106-bac822625d5b?mode=video&background=%23000000&color=%23FFFFFF&showTitle=false&loadBg=true&logoPosition=top-left&infoPosition=bottom-right&cinematicVideo=false&showMenu=true"></iframe>
-<iframe loading="lazy" src="https://lumalabs.ai/embed/492d44d1-1885-4aca-ae14-482e9d7306d9?mode=video&background=%23000000&color=%23FFFFFF&showTitle=false&loadBg=true&logoPosition=top-left&infoPosition=bottom-right&cinematicVideo=false&showMenu=true"></iframe>
-<iframe loading="lazy" src="https://lumalabs.ai/embed/ad705e8b-46c6-4088-9dbe-e6bbdb10aedf?mode=video&background=%23000000&color=%23FFFFFF&showTitle=false&loadBg=true&logoPosition=top-left&infoPosition=bottom-right&cinematicVideo=false&showMenu=true"></iframe>
-<iframe loading="lazy" src="https://lumalabs.ai/embed/e0c03e1c-c3b8-427e-aae2-d234dcacc3e0?mode=video&background=%23000000&color=%23FFFFFF&showTitle=false&loadBg=true&logoPosition=top-left&infoPosition=bottom-right&cinematicVideo=false&showMenu=true"></iframe>
-<iframe loading="lazy" src="https://lumalabs.ai/embed/fbf93bec-17c3-4957-8a13-0e2893a99e7e?mode=video&background=%23000000&color=%23FFFFFF&showTitle=false&loadBg=true&logoPosition=top-left&infoPosition=bottom-right&cinematicVideo=false&showMenu=true"></iframe>
-<iframe loading="lazy" src="https://lumalabs.ai/embed/0778fcf5-9805-4eee-927b-77f7cd26ad7b?mode=video&background=%23000000&color=%23FFFFFF&showTitle=false&loadBg=true&logoPosition=top-left&infoPosition=bottom-right&cinematicVideo=false&showMenu=true"></iframe>
-<iframe loading="lazy" src="https://lumalabs.ai/embed/b0748ec0-44d2-4b98-b3e9-4038634c2313?mode=video&background=%23000000&color=%23FFFFFF&showTitle=false&loadBg=true&logoPosition=top-left&infoPosition=bottom-right&cinematicVideo=false&showMenu=true"></iframe>
-<iframe loading="lazy" src="https://lumalabs.ai/embed/a898d0c5-b66f-4ec6-b9d2-994b2b27bdc8?mode=video&background=%23000000&color=%23FFFFFF&showTitle=false&loadBg=true&logoPosition=top-left&infoPosition=bottom-right&cinematicVideo=false&showMenu=true"></iframe>
-<iframe loading="lazy" src="https://lumalabs.ai/embed/a1fa30be-30dc-4ea6-b701-c6f1088e29ee?mode=video&background=%23000000&color=%23FFFFFF&showTitle=false&loadBg=true&logoPosition=top-left&infoPosition=bottom-right&cinematicVideo=false&showMenu=true"></iframe>
-<iframe loading="lazy" src="https://lumalabs.ai/embed/000a1801-e03d-4977-bf78-d4db5f853237?mode=video&background=%23000000&color=%23FFFFFF&showTitle=false&loadBg=true&logoPosition=top-left&infoPosition=bottom-right&cinematicVideo=false&showMenu=true"></iframe>
-<iframe loading="lazy" src="https://lumalabs.ai/embed/15dfa22d-f031-412f-ad29-02d5951b44cf?mode=video&background=%23000000&color=%23FFFFFF&showTitle=false&loadBg=true&logoPosition=top-left&infoPosition=bottom-right&cinematicVideo=false&showMenu=true"></iframe>
-<iframe loading="lazy" src="https://lumalabs.ai/embed/64eea35c-78a6-4d33-98d5-eb33255424a9?mode=video&background=%23000000&color=%23FFFFFF&showTitle=false&loadBg=true&logoPosition=top-left&infoPosition=bottom-right&cinematicVideo=false&showMenu=true"></iframe>
-<iframe loading="lazy" src="https://lumalabs.ai/embed/cb3e04e0-f0ca-4672-90a0-f74b8fcb6eda?mode=video&background=%23000000&color=%23FFFFFF&showTitle=false&loadBg=true&logoPosition=top-left&infoPosition=bottom-right&cinematicVideo=false&showMenu=true"></iframe>
-<iframe loading="lazy" src="https://lumalabs.ai/embed/0991e2b2-63d1-4666-b974-5e782b917b45?mode=video&background=%23000000&color=%23FFFFFF&showTitle=false&loadBg=true&logoPosition=top-left&infoPosition=bottom-right&cinematicVideo=false&showMenu=true"></iframe>
-<iframe loading="lazy" src="https://lumalabs.ai/embed/ed33857e-0636-40b3-85d2-500954040aa4?mode=video&background=%23000000&color=%23FFFFFF&showTitle=false&loadBg=true&logoPosition=top-left&infoPosition=bottom-right&cinematicVideo=false&showMenu=true"></iframe>
-<iframe loading="lazy" src="https://lumalabs.ai/embed/411c1904-a2c4-4204-8e75-15c1357177fc?mode=video&background=%23000000&color=%23FFFFFF&showTitle=false&loadBg=true&logoPosition=top-left&infoPosition=bottom-right&cinematicVideo=false&showMenu=true"></iframe>
-<iframe loading="lazy" src="https://lumalabs.ai/embed/49ca10d6-62c4-4b75-8a61-362cfbe5bf33?mode=video&background=%23000000&color=%23FFFFFF&showTitle=false&loadBg=true&logoPosition=top-left&infoPosition=bottom-right&cinematicVideo=false&showMenu=true"></iframe>
-<iframe loading="lazy" src="https://lumalabs.ai/embed/79f6b7ad-2025-47c2-b109-5132bb25fa3b?mode=video&background=%23000000&color=%23FFFFFF&showTitle=false&loadBg=true&logoPosition=top-left&infoPosition=bottom-right&cinematicVideo=false&showMenu=true"></iframe>
-<iframe loading="lazy" src="https://lumalabs.ai/embed/b4362835-c4aa-4182-acbd-7280faba5557?mode=video&background=%23000000&color=%23FFFFFF&showTitle=false&loadBg=true&logoPosition=top-left&infoPosition=bottom-right&cinematicVideo=false&showMenu=true"></iframe>
-<iframe loading="lazy" src="https://lumalabs.ai/embed/a8f9a99a-7a30-4f54-946e-9963e6037ce3?mode=video&background=%23000000&color=%23FFFFFF&showTitle=false&loadBg=true&logoPosition=top-left&infoPosition=bottom-right&cinematicVideo=false&showMenu=true"></iframe>
-<iframe loading="lazy" src="https://lumalabs.ai/embed/f7389442-6871-468e-9c75-f65b211582f9?mode=video&background=%23000000&color=%23FFFFFF&showTitle=false&loadBg=true&logoPosition=top-left&infoPosition=bottom-right&cinematicVideo=false&showMenu=true"></iframe>
-<iframe loading="lazy" src="https://lumalabs.ai/embed/54482e39-0787-4a14-8758-7bf4c09c2b99?mode=video&background=%23000000&color=%23FFFFFF&showTitle=false&loadBg=true&logoPosition=top-left&infoPosition=bottom-right&cinematicVideo=false&showMenu=true"></iframe>
-<iframe loading="lazy" src="https://lumalabs.ai/embed/62468f45-707f-4e56-997a-8ed73aeff900?mode=video&background=%23000000&color=%23FFFFFF&showTitle=false&loadBg=true&logoPosition=top-left&infoPosition=bottom-right&cinematicVideo=false&showMenu=true"></iframe>
-<iframe loading="lazy" src="https://lumalabs.ai/embed/6aa88e71-f8d7-4e0a-ad82-58ecfece7277?mode=video&background=%23000000&color=%23FFFFFF&showTitle=false&loadBg=true&logoPosition=top-left&infoPosition=bottom-right&cinematicVideo=false&showMenu=true"></iframe>
-<iframe loading="lazy" src="https://lumalabs.ai/embed/6abf6b5f-aaf8-4ac0-824c-703464c058da?mode=video&background=%23000000&color=%23FFFFFF&showTitle=false&loadBg=true&logoPosition=top-left&infoPosition=bottom-right&cinematicVideo=false&showMenu=true"></iframe>
-<iframe loading="lazy" src="https://lumalabs.ai/embed/0c6438c4-0e64-49a5-91c5-a5edcbe321f3?mode=video&background=%23000000&color=%23FFFFFF&showTitle=false&loadBg=true&logoPosition=top-left&infoPosition=bottom-right&cinematicVideo=false&showMenu=true"></iframe>
-<iframe loading="lazy" src="https://lumalabs.ai/embed/7cb95337-ad7e-49bc-9c9b-c344c57bcecb?mode=video&background=%23000000&color=%23FFFFFF&showTitle=false&loadBg=true&logoPosition=top-left&infoPosition=bottom-right&cinematicVideo=false&showMenu=true"></iframe>
-<iframe loading="lazy" src="https://lumalabs.ai/embed/f09aae23-4ecc-46ca-94a0-c3ad545bcbde?mode=video&background=%23000000&color=%23FFFFFF&showTitle=false&loadBg=true&logoPosition=top-left&infoPosition=bottom-right&cinematicVideo=false&showMenu=true"></iframe>
-<iframe loading="lazy" src="https://lumalabs.ai/embed/b5b916b8-5efa-48c1-9a81-ff2bb4ef33ba?mode=video&background=%23000000&color=%23FFFFFF&showTitle=false&loadBg=true&logoPosition=top-left&infoPosition=bottom-right&cinematicVideo=false&showMenu=true"></iframe>
-<iframe loading="lazy" src="https://lumalabs.ai/embed/a5663d37-eac1-4728-8b62-2237cff2d47e?mode=video&background=%23000000&color=%23FFFFFF&showTitle=false&loadBg=true&logoPosition=top-left&infoPosition=bottom-right&cinematicVideo=false&showMenu=true"></iframe>
-<iframe loading="lazy" src="https://lumalabs.ai/embed/794ce93f-198b-425e-ba9b-f38b73e1ab0c?mode=video&background=%23000000&color=%23FFFFFF&showTitle=false&loadBg=true&logoPosition=top-left&infoPosition=bottom-right&cinematicVideo=false&showMenu=true"></iframe>
-<iframe loading="lazy" src="https://lumalabs.ai/embed/bd7cdddc-a157-4c38-892b-02d8ab5cc39b?mode=video&background=%23000000&color=%23FFFFFF&showTitle=false&loadBg=true&logoPosition=top-left&infoPosition=bottom-right&cinematicVideo=false&showMenu=true"></iframe>
+    <div class="cards-container">
+
+     <div class="card">
+        <a href="https://mega.nz/file/Sf5DwIJZ#VGbRnHoYQ1KEdv8uhCZYeM8nJ-iaZ1fcwapheabOvEQ" target="_blank" title="Elysium">
+          <img loading="lazy" src="https://m.media-amazon.com/images/S/pv-target-images/e4e578e526b90ba7aad1c7fb8d0d7847d0e7fe8460a87eb43f351e62289c4785.jpg ">
+        </a>
+              </div>      
+
+     <div class="card">
+        <a href="https://photos.app.goo.gl/eEiGSDNhVPLuTkVr9" target="_blank" title="Leal">
+          <img loading="lazy" src="https://m.media-amazon.com/images/M/MV5BMTEzOTUwMjM4NjheQTJeQWpwZ15BbWU4MDc1NzcyMzcx._V1_.jpg">
+        </a>
+              </div>      
+
+     <div class="card">
+        <a href="https://photos.app.goo.gl/EDMJ9iNB4RnhCb4Q9" target="_blank" title="Insurgente">
+          <img loading="lazy" src="https://m.media-amazon.com/images/M/MV5BMjcwNzFiY2ItZDgzZC00OWZkLWI2ZDctYjJjNjRiMThiMWFiXkEyXkFqcGc@._V1_.jpg">
+        </a>
+              </div>      
+
+      <div class="card">
+        <a href="https://photos.app.goo.gl/QZVHguVfyHdGqjWu7" target="_blank" title="Divergente">
+          <img loading="lazy" src="https://m.media-amazon.com/images/M/MV5BMGY2NDlmZjQtZTdlNC00MTkwLTgxZGEtZDdlNDhhMjVhZmI4XkEyXkFqcGc@._V1_.jpg">
+        </a>
+              </div>      
+  
+     <div class="card">
+        <a href="https://photos.app.goo.gl/KpUvsaLX4fmb792G7" target="_blank" title="Lucy">
+          <img loading="lazy" src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fes.web.img3.acsta.net%2Fpictures%2F14%2F06%2F12%2F12%2F38%2F169418.jpg">
+        </a>
+              </div>      
+
+     <div id="theylive" class="card">
+        <a href="https://mega.nz/file/HZYglSYa#hIO9ctIa6QzCnWbsCwZ4AnrzYCr2HIQOL3b4OH_1c_Y" target="_blank" title="They Live">
+          <img loading="lazy" src="https://m.media-amazon.com/images/M/MV5BMjQwNTU2Nzk5Nl5BMl5BanBnXkFtZTgwODI5NjcyNjM@._V1_.jpg" >
+        </a>
+              </div>      
+        
+     <div class="card">
+        <a href="https://photos.app.goo.gl/KsHqJYrsRkxPmKtA8" target="_blank" title="El show de Truman">
+          <img loading="lazy" src="https://image.tmdb.org/t/p/original/vuza0WqY239yBXOadKlGwJsZJFE.jpg">
+        </a>
+              </div>      
+
+     <div class="card">
+        <a href="https://photos.app.goo.gl/Cf6RtqsHmLa9Mm4FA" target="_blank" title="V de Vendetta">
+          <img loading="lazy" src="https://gist.githubusercontent.com/oracleibmaisd0-droid/1afbd23b4b34156c32d2700a2a3383d8/raw/42c93cdf6837536cffa19c832a6e4820e7d1c42e/VendettaC.svg">
+        </a>
+              </div>      
+               
+               <div class="card">
+        <a href="https://mega.nz/folder/7MIlgDaZ#OIDiInYFPwf4Qg981iM8wA" target="_blank" title="MR Robot">
+          <img loading="lazy" src="https://m.media-amazon.com/images/M/MV5BZGFmMjYxZTEtMDgxMS00MTVjLThmMmQtYTFhOWI0NWVlODM4XkEyXkFqcGc@._V1_.jpg">
+        </a>
+              </div>      
+      
+               <div class="card">
+        <a href="https://photos.app.goo.gl/rNNYAVKFi7c9nQWV6" target="_blank" title="Black Mirror: Bandersnatch">
+          <img loading="lazy" src="https://i.ibb.co/4Z5q83Qy/In-Shot-20250908-232744519.jpg">
+        </a>
+              </div>      
+
+              <div class="card">
+        <a href="https://photos.app.goo.gl/F3XF4FyY8fGevtCSA" target="_blank" title="Dejar el mundo atr谩s">
+          <img loading="lazy" src="https://i.postimg.cc/2ysVMgs7/IMG-20250907-132758.jpg">
+        </a>
+              </div>      
+      
+              <div class="card">
+        <a href="https://photos.app.goo.gl/CKUjs5Dyh6LTJjJy9" target="_blank" title="Perfectos Desconocidos">
+          <img loading="lazy" src="https://image.tmdb.org/t/p/original/nAM5BzFBORX6xXQWn162CLBRLuy.jpg">
+        </a>
+              </div>      
+      
+              <div class="card">
+        <a href="https://mega.nz/file/PNxxDTTL#wGVmKzSAGsL8d4krC-zvJMHJXCDcEJK-t1fjum1OKKk" target="_blank" title="Matrix 3">
+          <img loading="lazy" src="https://i.ebayimg.com/images/g/cz0AAOSwHRpfjIiD/s-l1200.webp">
+        </a>
+      </div>
+        
+           <div class="card">
+        <a href="https://photos.app.goo.gl/pK6Fw36RkYZ7hKNi6" target="_blank" title="Natrix 2">
+          <img loading="lazy" src="https://wallpaperaccess.com/full/3148406.jpg">
+        </a>
+      </div>
+      
+      <div class="card">
+        <a href="https://photos.app.goo.gl/dyrKwsXSabCvGDD26" target="_blank" title="Matrix">
+          <img loading="lazy" src="https://www.originalfilmart.com/cdn/shop/products/the_matrix_1999_advance_original_film_art_d47e19ed-a6b9-47d3-985c-30197dd9ccc5_1200x.jpg">
+        </a>
+      </div>
     </div>
   </main>
 
   <!-- FOOTER -->
   <footer id="footer">
-    &copy; 2025 Oracle Quantum. Powered by Oracle. – Todos los derechos reservados.
+    &copy; 2025 Oracle Quantum. Powered by Oracle. - Todos los derechos reservados.
   </footer>
 
-  <!-- SCRIPT EFECTO BRILLO Y POP -->
+  <!-- SCRIPT EFECTOS -->
   <script>
-    const iframes = document.querySelectorAll('.iframe-grid iframe');
-    iframes.forEach((iframe, i) => { iframe.style.animationDelay = `${i * 0.1}s`; });
-
-    const header = document.getElementById('cabecera');
-    const footer = document.getElementById('footer');
-
+    /* Utilidad throttle para cabecera/pie */
     function throttle(fn, wait){
       let last = 0, rafId = null, pendingArgs = null;
       return function(...args){
@@ -601,6 +459,9 @@ body.menu-open .sidebar {
         }
       };
     }
+
+    const header = document.getElementById('cabecera');
+    const footer = document.getElementById('footer');
 
     function updateLight(el, clientX, clientY){
       const rect = el.getBoundingClientRect();
@@ -620,7 +481,7 @@ body.menu-open .sidebar {
         updateLight(el, clientX, clientY);
       }
       const throttledMove = throttle(onMove, 16);
-      el.addEventListener('pointerenter', () => el.classList.add('is-hot'));
+      el.addEventListener('pointerenter', throttledMove);
       el.addEventListener('pointermove', throttledMove);
       el.addEventListener('pointerleave', () => el.classList.remove('is-hot', 'edge-left', 'edge-right'));
       el.addEventListener('touchstart', throttledMove, { passive: true });
@@ -630,77 +491,102 @@ body.menu-open .sidebar {
 
     bindReactiveLight(header);
     bindReactiveLight(footer);
-    
-    const sidebar = document.getElementById('sidebar');
 
-bindReactiveLight(sidebar);
+    // Animaciones de aparici贸n
+    document.addEventListener("DOMContentLoaded", () => {
+      setTimeout(() => header.classList.add('show'), 200);
+      setTimeout(() => footer.classList.add('show'), 400);
 
-    const menuAnim = lottie.loadAnimation({
-    container: document.getElementById("menuIcon"),
-    renderer: "svg",
-    loop: false,
-    autoplay: false,
-    path: "https://raw.githubusercontent.com/oracleibmaisd0-droid/JsonMenuLateral/main/icons8-men%C3%BA-blanco.json"
-});
+      const cards = document.querySelectorAll('.card');
+      cards.forEach((card, i) => {
+        setTimeout(() => card.classList.add('show'), 500 + i * 150);
+      });
+    });
 
-let mitad = 0;
+    // --- EFECTO 3D + PARALLAX (profundidad natural) ---
+    const ROTATE_MAX = 20;   // grados
+    const SHIFT_MAX  = 24;   // p铆xeles (desplazamiento de la imagen)
+    document.querySelectorAll('.card').forEach(wrapper => {
+      const card = wrapper.querySelector('a');
+      const img  = wrapper.querySelector('img');
 
-menuAnim.addEventListener("DOMLoaded", () => {
-    mitad = Math.floor(menuAnim.totalFrames / 2);
-    menuAnim.goToAndStop(0, true);
-});
+      const applyFromPoint = (clientX, clientY) => {
+        const r = card.getBoundingClientRect();
+        const nx = (clientX - r.left) / r.width  - 0.5; // [-0.5, 0.5]
+        const ny = (clientY - r.top)  / r.height - 0.5;
 
-function toggleMenu() {
+        // Rotaci贸n: la tarjeta "mira" al puntero
+        const rx = -(ny * ROTATE_MAX);
+        const ry =  (nx * ROTATE_MAX);
+        card.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
 
-    document.body.classList.toggle("menu-open");
+        // Parallax interior: movimiento opuesto para dar profundidad (ventana)
+        const px = -(nx * SHIFT_MAX);
+        const py = -(ny * SHIFT_MAX);
+        img.style.transform = `translate(${px}px, ${py}px) scale(1.06)`;
+      };
 
-    const abierto = document.body.classList.contains("menu-open");
+      const reset = () => {
+        card.style.transform = 'rotateX(0deg) rotateY(0deg)';
+        img.style.transform  = 'translate(0,0) scale(1.06)';
+      };
 
-    if (abierto) {
-        menuAnim.goToAndStop(0, true);
-        menuAnim.playSegments([0, mitad], true);
-    } else {
-        menuAnim.goToAndStop(mitad, true);
-        menuAnim.playSegments([mitad, 0], true);
-    }
+      // Rat贸n / puntero
+      card.addEventListener('pointermove', e => applyFromPoint(e.clientX, e.clientY));
+      card.addEventListener('pointerleave', reset);
 
-}
+      // Tocar (por compatibilidad adicional, aunque pointer cubre touch moderno)
+      card.addEventListener('touchmove', e => {
+        const t = e.touches[0];
+        applyFromPoint(t.clientX, t.clientY);
+      }, { passive: true });
+      card.addEventListener('touchend', reset, { passive: true });
+    });
   </script>
+
+      <!-- ========TIEMPO======== -->
+  <!-- ==========================
+  MENSAJE ACTUALIZACI脫N
+  =========================== -->
+  
+  <script>
+  const fechaLimiteUpdate = new Date(2025, 11);
+  const update = new Date();
+
+  if (update < fechaLimiteUpdate) {
+    alert("Pel铆cula MATRIX 1 corregida:\n\nCorregido la interferencia de sonido del canal derecho.\n\nCalidad audiovisual mejorada.\n\n\n\nPel铆cula MATRIX 2 (RELOADED) corregida:\n\nCalidad audiovisual mejorada.");
+  }
+  </script>
+  <script>
+  window.scrollTo({
+  top: 500,
+  behavior: 'smooth'
+});
+</script>
 </body>
 
   <script>
 
 /*
 ==================================================
-    🔴🟢🔵 INDICADORES NOVEDADES
+    馃敶馃煝馃數 INDICADORES NOVEDADES
 ==================================================
 */
 
-marcar("Hoguera LoveHover Alicante 26", "#ff0000", "10/09/2026");
-marcar("Hoguera SexPol Alicante 26", "#ff0000", "10/09/2026");
-marcar("Hoguera PhyLove Alicante 26", "#ff0000", "10/09/2026");
-marcar("Hoguera LoveCut Alicante 26", "#ff0000", "10/09/2026");
-marcar("Hoguera Alicante 26 LoveDigital", "#ff0000", "10/09/2026");
-
-/* MENU */
-
-marcar("Menú lateral", "#ff0000", "10/09/2026");
-
-marcar("Álbum de imágenes", "#ff0000", "10/09/2026");
-marcar("Galería 360°", "#ff0000", "01/01/2026");
+marcar("Elysium", "#ff0000", "15/09/2026");
 
 /*
 ==================================================
-    FUNCIÓN marcar()
+    FUNCI脫N marcar()
 ==================================================
 */
 
 function marcar(palabra, color, fechaCaducidad) {
 
     /*
-    ==============================================
-    VENCIMIENTO
-    ==============================================
+    ----------------------------------------------
+    Vencimiento fecha funci贸n
+    ----------------------------------------------
     */
 
     if (fechaCaducidad) {
@@ -709,10 +595,14 @@ function marcar(palabra, color, fechaCaducidad) {
 
         const dia = parseInt(partes[0], 10);
         const mes = parseInt(partes[1], 10) - 1;
-        const año = parseInt(partes[2], 10);
+        const a帽o = parseInt(partes[2], 10);
+
+        /*
+        La fecha caduca una vez superado el l铆mite.
+        */
 
         const caducidad = new Date(
-            año,
+            a帽o,
             mes,
             dia + 1,
             0,
@@ -722,6 +612,10 @@ function marcar(palabra, color, fechaCaducidad) {
 
         const ahora = new Date();
 
+        /*
+        Nule pasdate
+        */
+
         if (ahora >= caducidad) {
             return;
         }
@@ -729,9 +623,9 @@ function marcar(palabra, color, fechaCaducidad) {
 
 
     /*
-    ==============================================
-    1. BUSCAR EN TEXTOS NORMALES
-    ==============================================
+    ----------------------------------------------
+    Buscador texto
+    ----------------------------------------------
     */
 
     const walker = document.createTreeWalker(
@@ -748,37 +642,20 @@ function marcar(palabra, color, fechaCaducidad) {
     }
 
 
+    /*
+    ----------------------------------------------
+    Procesador texto buscado.
+    ----------------------------------------------
+    */
+
     nodos.forEach(textNode => {
-
-        /*
-        Evitar modificar texto que esté
-        dentro de un iframe.
-        */
-
-        if (textNode.parentElement?.closest("iframe")) {
-            return;
-        }
-
-        /*
-        Evitar modificar un punto que
-        ya hayamos creado.
-        */
-
-        if (
-            textNode.parentElement?.classList.contains(
-                "punto-novedad"
-            )
-        ) {
-            return;
-        }
 
         const texto = textNode.nodeValue;
 
         if (
-            !texto ||
-            !texto.toLowerCase().includes(
-                palabra.toLowerCase()
-            )
+            !texto
+                .toLowerCase()
+                .includes(palabra.toLowerCase())
         ) {
             return;
         }
@@ -788,12 +665,22 @@ function marcar(palabra, color, fechaCaducidad) {
             document.createDocumentFragment();
 
 
+        /*
+        Separar las apariciones de la palabra.
+        */
+
         const partes = texto.split(
             new RegExp(`(${palabra})`, "gi")
         );
 
 
         partes.forEach(parte => {
+
+            /*
+            --------------------------------------
+            Palabra encontrada
+            --------------------------------------
+            */
 
             if (
                 parte.toLowerCase() ===
@@ -810,6 +697,10 @@ function marcar(palabra, color, fechaCaducidad) {
                     parte;
 
 
+                /*
+                Crear burbuja de notificaci贸n.
+                */
+
                 const punto =
                     document.createElement("span");
 
@@ -819,14 +710,25 @@ function marcar(palabra, color, fechaCaducidad) {
                 punto.style.backgroundColor =
                     color;
 
-                punto.style.top = "-6px";
-                punto.style.right = "-9px";
+
+                /*
+                A帽adir en palabra
+                */
 
                 marcado.appendChild(punto);
 
                 fragmento.appendChild(marcado);
 
-            } else {
+            }
+
+
+            /*
+            --------------------------------------
+            Texto no encontrado.
+            --------------------------------------
+            */
+
+            else {
 
                 fragmento.appendChild(
                     document.createTextNode(parte)
@@ -837,182 +739,65 @@ function marcar(palabra, color, fechaCaducidad) {
         });
 
 
+        /*
+        ----------------------------------------------
+        Sustituir texto original
+        ----------------------------------------------
+        */
+
         textNode.parentNode.replaceChild(
             fragmento,
             textNode
         );
 
+
     });
 
 
-    /*
-    ==============================================
-    2. BUSCAR IFRAMES POR SU TEXTO INTERNO
-    ==============================================
-    */
-    
-document.querySelectorAll("iframe").forEach(iframe => {
+document.querySelectorAll("[title]").forEach(elemento => {
 
-    const texto = iframe.textContent.trim();
-
-    if (
-        texto &&
-        texto.toLowerCase().includes(palabra.toLowerCase())
-    ) {
-
-        // Crear un contenedor SOLO para este iframe
-        const contenedor = document.createElement("div");
-
-        contenedor.style.position = "relative";
-        contenedor.style.width = "100%";
-        contenedor.style.aspectRatio = "1 / 1";
-
-        // Meter el contenedor en la cuadrícula
-        iframe.parentNode.insertBefore(
-            contenedor,
-            iframe
-        );
-
-        // Meter el iframe dentro de su propio contenedor
-        contenedor.appendChild(iframe);
-
-        // Mantener el iframe ocupando todo el contenedor
-        iframe.style.width = "100%";
-        iframe.style.height = "100%";
-        iframe.style.display = "block";
-
-        // Crear punto
-        const punto = document.createElement("span");
-
-        punto.className = "punto-novedad";
-        punto.style.backgroundColor = color;
-
-        punto.style.position = "absolute";
-        punto.style.top = "-4px";
-        punto.style.right = "-4px";
-
-        contenedor.appendChild(punto);
-    }
-
-});
-
-
-document.querySelectorAll("img[title]").forEach(img => {
-
-    const titulo = img.getAttribute("title");
+    const titulo = elemento.getAttribute("title");
 
     if (
         titulo &&
         titulo.toLowerCase().includes(palabra.toLowerCase())
     ) {
 
+        const contenedor = elemento.parentElement;
+
+        /*
+        El contenedor ser谩 la referencia para posicionar el la burbuja.
+        */
+
+        contenedor.style.position = "relative";
+        contenedor.style.display = "inline-block";
+
+
+        /*
+        Crear burbuja.
+        */
+
         const punto = document.createElement("span");
 
         punto.className = "punto-novedad";
+
         punto.style.backgroundColor = color;
 
+
+        /*
+        Esquina superior derecha
+        */
+
         punto.style.position = "absolute";
-        punto.style.top = "-6px";
-        punto.style.right = "-9px";
-
-        // El IMG será el elemento de referencia
-        img.parentElement.style.position = "relative";
-
-        img.parentElement.appendChild(punto);
-    }
-
-});
-
-
-    /*
-    ==============================================
-    3. BUSCAR ATRIBUTOS TITLE
-    ==============================================
-    */
-
-    document.querySelectorAll("[title]").forEach(elemento => {
-
-        /*
-        Ignorar el propio punto
-        */
-
-        if (
-            elemento.classList.contains(
-                "punto-novedad"
-            )
-        ) {
-            return;
-        }
-
-
-        const titulo =
-            elemento.getAttribute("title");
-
-
-        if (
-            !titulo ||
-            !titulo.toLowerCase().includes(
-                palabra.toLowerCase()
-            )
-        ) {
-            return;
-        }
-
-
-        /*
-        Si ya tiene un punto,
-        no crear otro.
-        */
-
-        if (
-            elemento.querySelector(
-                ":scope > .punto-novedad"
-            )
-        ) {
-            return;
-        }
-
-
-        /*
-        IMPORTANTE:
-        No envolvemos el elemento.
-
-        Simplemente hacemos que él mismo
-        sea el punto de referencia.
-        */
-
-        const posicionActual =
-            getComputedStyle(elemento).position;
-
-        if (posicionActual === "static") {
-            elemento.style.position = "relative";
-        }
-
-
-        /*
-        Crear punto
-        */
-
-        const punto =
-            document.createElement("span");
-
-        punto.className =
-            "punto-novedad";
-
-        punto.style.backgroundColor =
-            color;
-
         punto.style.top = "-4px";
         punto.style.right = "-4px";
 
 
-        /*
-        Añadir directamente al elemento
-        */
+        contenedor.appendChild(punto);
+    }
 
-        elemento.appendChild(punto);
+});
 
-    });
 
 }
 
