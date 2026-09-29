@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>Cine</title>
-  <link rel="icon" href="https://img.icons8.com/fluency/10000/movie.png">
+  <link rel="icon" href="https://raw.githubusercontent.com/IMAGESARCH/Cine/refs/heads/main/Cine.png">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link href="https://fonts.cdnfonts.com/css/product-sans" rel="stylesheet" />
   <style>
@@ -65,7 +65,7 @@
   transform: translate(-50%, -50%);
   filter: blur(100px);
 
-  /* Animaci贸n combinada: movimiento + rotaci贸n */
+  /* Animación combinada: movimiento + rotación */
   animation: blobAnimation 40s ease-in-out infinite alternate,
              colorChange 20s ease-in-out infinite alternate;
 }
@@ -75,7 +75,7 @@
 .luma-blob.b2 { background: #007f00; animation-duration: 42s, 22s; }
 .luma-blob.b3 { background: #00007f; animation-duration: 36s, 20s; }
 
-/* Animaci贸n combinada: movimiento + giro */
+/* Animación combinada: movimiento + giro */
 @keyframes blobAnimation {
   0%   { transform: translate(-50%, -50%) translateX(-15%) translateY(-10%) scale(0.5) rotate(0deg); }
   25%  { transform: translate(-50%, -50%) translateX(10%) translateY(15%) scale(0.8) rotate(90deg); }
@@ -91,7 +91,7 @@
   100% { filter: blur(100px) hue-rotate(360deg); }
 }
 
-    /* CABECERA TRANSL脷CIDA */
+    /* CABECERA TRANSLÚCIDA */
     .glass-header {
       --mx: 50%;
       --my: 50%;
@@ -112,7 +112,7 @@
       overflow: clip;
       isolation: isolate;
 
-      /* Aparici贸n desde arriba */
+      /* Aparición desde arriba */
       transform: translateY(-50px);
       opacity: 0;
       transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.8s ease;
@@ -207,7 +207,7 @@
       will-change: transform;
     }
 
-    /* Imagen con ligera ampliaci贸n y transici贸n para el parallax */
+    /* Imagen con ligera ampliación y transición para el parallax */
     .card img {
       width: 100%;
       height: 100%;
@@ -236,7 +236,7 @@
       isolation: isolate;
       overflow: clip;
 
-      /* Aparici贸n desde abajo */
+      /* Aparición desde abajo */
       transform: translateY(50px);
       opacity: 0;
       transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.8s ease;
@@ -403,7 +403,7 @@
               </div>      
 
               <div class="card">
-        <a href="https://photos.app.goo.gl/F3XF4FyY8fGevtCSA" target="_blank" title="Dejar el mundo atr谩s">
+        <a href="https://photos.app.goo.gl/F3XF4FyY8fGevtCSA" target="_blank" title="Dejar el mundo atrás">
           <img loading="lazy" src="https://i.postimg.cc/2ysVMgs7/IMG-20250907-132758.jpg">
         </a>
               </div>      
@@ -492,7 +492,7 @@
     bindReactiveLight(header);
     bindReactiveLight(footer);
 
-    // Animaciones de aparici贸n
+    // Animaciones de aparición
     document.addEventListener("DOMContentLoaded", () => {
       setTimeout(() => header.classList.add('show'), 200);
       setTimeout(() => footer.classList.add('show'), 400);
@@ -505,7 +505,7 @@
 
     // --- EFECTO 3D + PARALLAX (profundidad natural) ---
     const ROTATE_MAX = 20;   // grados
-    const SHIFT_MAX  = 24;   // p铆xeles (desplazamiento de la imagen)
+    const SHIFT_MAX  = 24;   // píxeles (desplazamiento de la imagen)
     document.querySelectorAll('.card').forEach(wrapper => {
       const card = wrapper.querySelector('a');
       const img  = wrapper.querySelector('img');
@@ -515,7 +515,7 @@
         const nx = (clientX - r.left) / r.width  - 0.5; // [-0.5, 0.5]
         const ny = (clientY - r.top)  / r.height - 0.5;
 
-        // Rotaci贸n: la tarjeta "mira" al puntero
+        // Rotación: la tarjeta "mira" al puntero
         const rx = -(ny * ROTATE_MAX);
         const ry =  (nx * ROTATE_MAX);
         card.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
@@ -531,7 +531,7 @@
         img.style.transform  = 'translate(0,0) scale(1.06)';
       };
 
-      // Rat贸n / puntero
+      // Ratón / puntero
       card.addEventListener('pointermove', e => applyFromPoint(e.clientX, e.clientY));
       card.addEventListener('pointerleave', reset);
 
@@ -546,7 +546,7 @@
 
       <!-- ========TIEMPO======== -->
   <!-- ==========================
-  MENSAJE ACTUALIZACI脫N
+  MENSAJE ACTUALIZACIÓN
   =========================== -->
   
   <script>
@@ -554,7 +554,7 @@
   const update = new Date();
 
   if (update < fechaLimiteUpdate) {
-    alert("Pel铆cula MATRIX 1 corregida:\n\nCorregido la interferencia de sonido del canal derecho.\n\nCalidad audiovisual mejorada.\n\n\n\nPel铆cula MATRIX 2 (RELOADED) corregida:\n\nCalidad audiovisual mejorada.");
+    alert("Película MATRIX 1 corregida:\n\nCorregido la interferencia de sonido del canal derecho.\n\nCalidad audiovisual mejorada.\n\n\n\nPelícula MATRIX 2 (RELOADED) corregida:\n\nCalidad audiovisual mejorada.");
   }
   </script>
   <script>
@@ -569,7 +569,7 @@
 
 /*
 ==================================================
-    馃敶馃煝馃數 INDICADORES NOVEDADES
+    🔴🟢🔵 INDICADORES NOVEDADES
 ==================================================
 */
 
@@ -577,7 +577,7 @@ marcar("Elysium", "#ff0000", "15/09/2026");
 
 /*
 ==================================================
-    FUNCI脫N marcar()
+    FUNCIÓN marcar()
 ==================================================
 */
 
@@ -585,7 +585,7 @@ function marcar(palabra, color, fechaCaducidad) {
 
     /*
     ----------------------------------------------
-    Vencimiento fecha funci贸n
+    Vencimiento fecha función
     ----------------------------------------------
     */
 
@@ -595,14 +595,14 @@ function marcar(palabra, color, fechaCaducidad) {
 
         const dia = parseInt(partes[0], 10);
         const mes = parseInt(partes[1], 10) - 1;
-        const a帽o = parseInt(partes[2], 10);
+        const año = parseInt(partes[2], 10);
 
         /*
-        La fecha caduca una vez superado el l铆mite.
+        La fecha caduca una vez superado el límite.
         */
 
         const caducidad = new Date(
-            a帽o,
+            año,
             mes,
             dia + 1,
             0,
@@ -698,7 +698,7 @@ function marcar(palabra, color, fechaCaducidad) {
 
 
                 /*
-                Crear burbuja de notificaci贸n.
+                Crear burbuja de notificación.
                 */
 
                 const punto =
@@ -712,7 +712,7 @@ function marcar(palabra, color, fechaCaducidad) {
 
 
                 /*
-                A帽adir en palabra
+                Añadir en palabra
                 */
 
                 marcado.appendChild(punto);
@@ -766,7 +766,7 @@ document.querySelectorAll("[title]").forEach(elemento => {
         const contenedor = elemento.parentElement;
 
         /*
-        El contenedor ser谩 la referencia para posicionar el la burbuja.
+        El contenedor será la referencia para posicionar el la burbuja.
         */
 
         contenedor.style.position = "relative";
